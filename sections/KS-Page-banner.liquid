@@ -1,0 +1,62 @@
+{% schema %}
+{
+  "name": "Add Gift Wrap Banner",
+  "tag": "section",
+  "class": "section-giftwrap-banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_title",
+      "label": "Banner Title",
+      "default": "Add Gift Wrap"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Add Gift Wrap Banner"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="page-banner-wrapper">
+  {% if section.settings.banner_image %}
+    <img
+      loading="lazy"
+      src="{{ section.settings.banner_image | img_url: "master" }}"
+      alt="{{ section.settings.banner_title }}"
+    >
+  {% endif %}
+  <div class="page-banner-inner-text">
+    <strong>{{ section.settings.banner_title }}</strong>
+  </div>
+</div>
+
+<style>
+  .page-banner-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-banner-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .page-banner-inner-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+  }
+</style>

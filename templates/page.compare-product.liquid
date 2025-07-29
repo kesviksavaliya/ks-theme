@@ -1,0 +1,172 @@
+<div class="compare-header">
+  <h2 id="compare-title">Compare Products</h2>
+  <button id="remove-all-btn">Remove All</button>
+</div>
+
+<div class="compare-table-wrapper">
+  <table id="compare-horizontal-table">
+    <thead>
+      <tr>
+        <th>Feature ↓</th>
+        <!-- Product titles will go here via JS -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="compare-row-image">
+        <td>Image</td>
+      </tr>
+      <tr class="compare-row-title">
+        <td>Title</td>
+      </tr>
+      <tr class="compare-row-price">
+        <td>Price</td>
+      </tr>
+      <tr class="compare-row-remove">
+        <td>Remove</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .compare-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 30px auto 10px;
+    padding: 0 15px;
+  }
+
+
+
+  #remove-all-btn {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  #remove-all-btn:hover {
+    background-color: #e60000;
+  }
+
+  .compare-table-wrapper {
+    overflow-x: auto;
+    padding: 0 15px 30px;
+  }
+
+  #compare-horizontal-table {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+
+  #compare-horizontal-table th,
+  #compare-horizontal-table td {
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    font-size: 15px;
+    color: #333;
+    vertical-align: middle;
+  }
+
+  #compare-horizontal-table td img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 8px;
+    padding: 5px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    margin: 0 auto;
+  }
+
+  #compare-horizontal-table button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  #compare-horizontal-table button:hover {
+    background-color: #e60000;
+  }
+
+  .empty-row {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+    color: #888;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const table = document.getElementById('compare-horizontal-table');
+    const compareList = JSON.parse(localStorage.getItem('compareList')) || [];
+
+    if (compareList.length === 0) {
+      table.innerHTML = '<tr><td colspan="5" class="empty-row">No products in compare list.</td></tr>';
+      document.getElementById('remove-all-btn').style.display = 'none';
+      return;
+    }
+
+    const theadRow = table.querySelector('thead tr');
+    const imageRow = table.querySelector('.compare-row-image');
+    const titleRow = table.querySelector('.compare-row-title');
+    const priceRow = table.querySelector('.compare-row-price');
+    const removeRow = table.querySelector('.compare-row-remove');
+
+    compareList.forEach((product, index) => {
+      // Add product title to <thead>
+      const th = document.createElement('th');
+      th.textContent = `Product ${index + 1}`;
+      theadRow.appendChild(th);
+
+      // Add image
+      const tdImage = document.createElement('td');
+      tdImage.innerHTML = `<img src="${product.image}" alt="${product.title}">`;
+      imageRow.appendChild(tdImage);
+
+      // Add title
+      const tdTitle = document.createElement('td');
+      tdTitle.textContent = product.title;
+      titleRow.appendChild(tdTitle);
+
+      // Add price
+      const tdPrice = document.createElement('td');
+      tdPrice.textContent = product.price;
+      priceRow.appendChild(tdPrice);
+
+      // Add remove button
+      const tdRemove = document.createElement('td');
+      tdRemove.innerHTML = `<button onclick="removeCompare(${index})">Remove</button>`;
+      removeRow.appendChild(tdRemove);
+    });
+
+    document.getElementById('remove-all-btn').addEventListener('click', function () {
+      localStorage.removeItem('compareList');
+      location.reload();
+    });
+  });
+
+  function removeCompare(index) {
+    let compareList = JSON.parse(localStorage.getItem('compareList')) || [];
+    compareList.splice(index, 1);
+    localStorage.setItem('compareList', JSON.stringify(compareList));
+    location.reload();
+  }
+</script>

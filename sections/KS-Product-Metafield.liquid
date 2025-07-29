@@ -1,0 +1,92 @@
+<div class="description-info-wrapper">
+  <div class="page-width2">
+    <div class="description-info-inner">
+      <div class="heading">
+        <h3>{{ section.settings.product_details_topic }}</h3>
+      </div>
+      <div class="description-inner-details">
+        <h2>{{ section.settings.heading }}</h2>
+        <div>{{ section.settings.paragraphs1 }}</div>
+
+        {% if section.settings.image != blank %}
+          <img loading="lazy" src="{{ section.settings.image | image_url }}" alt="Product image">
+        {% endif %}
+
+        <div>{{ section.settings.paragraphs2 }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Description",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Product Details Topic",
+      "id": "product_details_topic",
+      "default": "Description",
+      "placeholder": "Enter Topic Name"
+    },
+    {
+      "type": "text",
+      "label": "Heading",
+      "id": "heading",
+      "default": "About this item",
+      "placeholder": "Write Heading"
+    },
+    {
+      "type": "richtext",
+      "label": "Paragraphs 1",
+      "id": "paragraphs1",
+      "default": "<p>Indulge in the allure of timeless elegance with our Diamond Pendant Necklace. Whether worn as a symbol of love, a celebration of achievements, or simply as a daily indulgence, this necklace is a testament to enduring beauty and refined style. Your Timeless Elegance Diamond Pendant Necklace arrives in an elegant jewelry box, making it a perfect gift for a loved one or a treasured addition to your own collection. Each necklace is accompanied by a certificate of authenticity, guaranteeing the quality of the diamonds and gold.</p><p>The pendant features a cluster of brilliant round-cut diamonds that sparkle with exceptional clarity and fire. The carefully selected stones are set in a captivating arrangement, creating a stunning focal point that captures the light from every angle. The Timeless Elegance necklace is designed for versatility, making it the perfect accessory for both formal events and everyday elegance. Its understated yet luxurious design complements a range of styles, adding a touch of glamour to any outfit.</p>"
+    },
+    {
+      "type": "image_picker",
+      "label": "Image",
+      "id": "image"
+    },
+    {
+      "type": "richtext",
+      "label": "Paragraphs 2",
+      "id": "paragraphs2",
+      "default": "<p>The necklace comes with an adjustable chain, allowing you to customize the length to suit your neckline and style preference. The secure clasp ensures a comfortable and confident wear.</p><p>Meticulously crafted in 14k white gold, the pendant exemplifies superior craftsmanship. The metal setting provides a sophisticated backdrop, allowing the diamonds to take center stage. The attention to detail ensures a piece that stands the test of time.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Description"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+    .description-info-wrapper {
+  	margin: 100px 0;
+  }
+    .description-info-inner .heading {
+  	text-align: center;
+  	margin-bottom: 20px;
+  	border-bottom: 1px solid #0000001a;
+  	padding-bottom: 10px;
+  }
+    .description-info-inner .heading h3 {
+  	font-weight: 600;
+  	font-size: 26px;
+  	text-transform: uppercase;
+  	color: #111;
+  }
+    .description-info-inner .description-inner-details h2 {
+  	color: #111;
+  	font-weight: 500;
+  	font-size: 30px;
+  }
+    .description-info-inner .description-inner-details div {
+  	margin-bottom: 10px;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

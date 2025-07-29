@@ -1,0 +1,232 @@
+<div class="hero-slider-wrapper {% if section.settings.full_height %}hero-slider--full{% endif %}">
+  <div id="HeroSlider-{{ section.id }}" class="hero-slider">
+    {% for block in section.blocks %}
+      {% assign has_image = false %}
+      {% assign has_video = false %}
+
+      {% if block.settings.slide_image != blank %}
+        {% assign has_image = true %}
+      {% endif %}
+      {% if block.settings.slide_video != blank %}
+        {% assign has_video = true %}
+      {% endif %}
+
+      <div class="hero-slide" {{ block.shopify_attributes }}>
+        {% if has_image %}
+          {{
+            block.settings.slide_image
+            | image_url: width: 3840
+            | image_tag:
+              widths: '300,450,600,750,900,1050,1200,1350,1500,1650,1800,1950,2000,2500,3000,3500,4000,5000',
+              sizes: '(min-width:750px) 100vw, 100vw',
+              class: 'hero-slide__media'
+          }}
+        {% elsif has_video %}
+          {{
+            block.settings.slide_video
+            | video_tag:
+              image_size: '3840x',
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              class: 'hero-slide__media'
+          }}
+        {% endif %}
+
+        <div class="hero-slide__overlay" style="background:{{ block.settings.overlay_color }}"></div>
+
+        <div class="hero-slide__content page-width">
+          {{ block.settings.heading }}
+          {{ block.settings.subheading }}
+          {% if block.settings.button_label != blank %}
+            <a href="{{ block.settings.button_link }}" class="button">
+              {{ block.settings.button_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var $slider = $('#HeroSlider-{{ section.id }}');
+    if ($slider.length && !$slider.hasClass('slick-initialized')) {
+      $slider.slick({
+        autoplay: {{ section.settings.autoplay }},
+        autoplaySpeed: {{ section.settings.autoplay_speed }},
+        arrows: {{ section.settings.arrows }},
+        dots: {{ section.settings.dots }},
+        fade: {{ section.settings.fade }},
+        speed: 750,
+        prevArrow:
+          '<button type="button" class="slick-prev" aria-label="Previous">{% render "icon-arrow-left" %}</button>',
+        nextArrow:
+          '<button type="button" class="slick-next" aria-label="Next">{% render "icon-arrow-right" %}</button>'
+      });
+    }
+  });
+</script>
+
+<style>
+  .hero-slider-wrapper { position:relative; width:100%; overflow:hidden; }
+  .hero-slider--full   { min-height:100svh; }
+  .hero-slider         { width:100%; }
+  .hero-slide          { position:relative; min-height:inherit; }
+  .hero-slide__media   { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:-2; }
+  .hero-slide__overlay { position:absolute; inset:0; z-index:-1; }
+
+  .hero-slide__content {
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    justify-content:center;
+    min-height:inherit;
+    padding:40px 0;
+    /* alignment choices */
+    {% if section.settings.content_align == 'start' %}
+      align-items:flex-start;
+      text-align:left;
+    {% elsif section.settings.content_align == 'end' %}
+      align-items:flex-end;
+      text-align:right;
+    {% else %}
+      align-items:center;
+      text-align:center;
+    {% endif %}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero slider",
+  "tag": "section",
+  "class": "hero-slider-section",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "slide_video",
+          "label": "Video"
+        },
+        {
+          "type": "richtext",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay",
+          "alpha": true,
+          "default": "#00000040"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "label": "Full screen height",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Content alignment",
+      "options": [
+        { "value": "start",  "label": "Left"   },
+        { "value": "center", "label": "Center" },
+        { "value": "end",    "label": "Right"  }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed (ms)",
+      "min": 1000,
+      "max": 9000,
+      "step": 500,
+      "default": 5000
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "fade",
+      "label": "Use cross-fade",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "<h1>Summer starts here</h1>",
+            "subheading": "<p>Light fabrics, brighter moods.</p>",
+            "button_label": "Shop now",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "<h1>Denim redefined</h1>",
+            "subheading": "<p>Find your fit — from skinny to relaxed</p>",
+            "button_label": "Explore denim",
+            "button_link": "shopify://collections/denim"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

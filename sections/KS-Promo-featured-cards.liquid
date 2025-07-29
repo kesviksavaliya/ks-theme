@@ -1,0 +1,102 @@
+<div class="promo-featured-wrapper">
+  <div class="page-width">
+    <div class="promo-featured-inner">
+      {% for block in section.blocks %}
+        <div class="promo-featured-item">
+          <div class="promo-featured-item-image">
+            <img
+              loading="lazy"
+              src="{{ block.settings.image | img_url: 'master' }}"
+              alt="{{ block.settings.heading | escape }}"
+            >
+          </div>
+
+          <h6>{{ block.settings.discount_text }}</h6>
+          <h4>{{ block.settings.heading }}</h4>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Promo Featured Card",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "promo_featured_block",
+      "name": "Promo Featured Block",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "text",
+          "label": "Discount Text",
+          "id": "discount_text",
+          "default": "20% SALE EVENT THIS WEEKEND",
+          "placeholder": "Discount Text"
+        },
+        {
+          "type": "text",
+          "label": "Heading",
+          "id": "heading",
+          "default": "Best Charms Embracing The Essence Of Classic Style ",
+          "placeholder": "Heading"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Promo Featured Card Section"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+            .promo-featured-wrapper {
+          	margin: 50px 0;
+          }
+          .promo-featured-inner {
+          	display: flex;
+          	gap: 30px;
+          	width: 76%;
+          	margin: 0 auto;
+          }
+            .promo-featured-inner .promo-featured-item {
+          	width: 50%;
+          }
+        .promo-featured-inner .promo-featured-item h6 {
+  	margin-bottom: 0;
+  	margin: 22px 0;
+  	text-transform: uppercase;
+  	font-weight: 500;
+  }
+        .promo-featured-inner .promo-featured-item h4 {
+        	margin-top: 0;
+        	margin: 10px 0;
+        	/* width: 90%; */
+        	font-size: 34px;
+        	line-height: 1.2;
+        	font-weight: 500;
+        }
+        .promo-featured-item-image {
+      	overflow: hidden;
+      }
+        .promo-featured-item-image img{
+          transition: all 1s;
+        }
+        .promo-featured-inner .promo-featured-item:hover img {
+      	transform: scale(1.1);
+      }
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

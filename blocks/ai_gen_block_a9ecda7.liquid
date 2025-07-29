@@ -1,0 +1,97 @@
+{% doc %}
+  @prompt
+    Create a Shopify 2.0 section (product-details.liquid) that shows product details as blocks. Each block displays one product property in a simple text format (no icons, no fancy design):
+    
+    SKU: → {{ product.selected_or_first_available_variant.sku }}
+    
+    Vendor: → {{ product.vendor }}
+    
+    Category: → {{ product.type }}
+    
+    Tags: → {{ product.tags | join: ', ' }}
+    
+    Each item should be a separate block (sku, vendor, category, tags), and merchants can enable/disable them in the Shopify theme editor.
+    
+    Use <p> tags and <strong> for labels.
+    Add a clean {% schema %} with a default preset showing all blocks.
+    Minimal CSS inside <style>.
+    
+    Output: full working Liquid code for a section file.
+
+{% enddoc %}
+{% assign ai_gen_id = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .product-details-{{ ai_gen_id }} {
+    margin: 20px 0;
+  }
+
+  .product-details-{{ ai_gen_id }} p {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .product-details-{{ ai_gen_id }} strong {
+    font-weight: 600;
+  }
+{% endstyle %}<div class="product-details-{{ ai_gen_id }}" {{ section.shopify_attributes }}>
+  {% if section.settings.show_sku and product.selected_or_first_available_variant.sku != blank %}
+    <p><strong>SKU:</strong> {{ product.selected_or_first_available_variant.sku }}</p>
+  {% endif %}
+
+  {% if section.settings.show_vendor and product.vendor != blank %}
+    <p><strong>Vendor:</strong> {{ product.vendor }}</p>
+  {% endif %}
+
+  {% if section.settings.show_category and product.type != blank %}
+    <p><strong>Category:</strong> {{ product.type }}</p>
+  {% endif %}
+
+  {% if section.settings.show_tags and product.tags.size > 0 %}
+    <p><strong>Tags:</strong> {{ product.tags | join: ', ' }}</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Product Details",
+  "tag": "section",
+  "class": "section-product-details",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sku",
+      "label": "Show SKU",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show Vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category",
+      "label": "Show Category",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show Tags",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Details"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{% comment %}
+  Breadcrumb Section — Works on product pages and globally.
+{% endcomment %}
+
+<section
+  class="breadcrumb-wrapper"
+  style="background-image: url({{ section.settings.bg_image | image_url: width: 1920 }});"
+>
+  <div class="breadcrumb-container">
+    {% if template contains 'product' and product %}
+      <a href="{{ routes.root_url }}" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">{{ product.title }}</span>
+    {% else %}
+      {{ 'Breadcrumb section works best on product pages.' }}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .breadcrumb-wrapper {
+    background-size: cover;
+    background-position: center;
+    padding: 5rem 1rem;
+    text-align: center;
+  }
+
+  .breadcrumb-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-size: 1rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .breadcrumb-link {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb-link:hover {
+    color: #111;
+  }
+
+  .breadcrumb-divider {
+    margin: 0 0.5rem;
+  }
+
+  .breadcrumb-current {
+    color: #333;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumb Section",
+    }
+  ]
+}
+{% endschema %}

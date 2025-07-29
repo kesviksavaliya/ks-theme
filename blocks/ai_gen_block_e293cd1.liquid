@@ -1,0 +1,167 @@
+{% doc %}
+  @prompt
+    Create a discount badge in yellowish color that displays near the product price and compare at price. The badge should automatically calculate and show the discount percentage when a compare at price is present. Include proper styling to make it visually appealing and ensure it's positioned correctly relative to the price elements. The badge should be fully functional and only appear when there's actually a discount to display.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .discount-badge-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ block.settings.badge_background_color }};
+    color: {{ block.settings.badge_text_color }};
+    font-weight: {{ block.settings.font_weight }};
+    font-size: {{ block.settings.font_size }}px;
+    padding: {{ block.settings.vertical_padding }}px {{ block.settings.horizontal_padding }}px;
+    border-radius: {{ block.settings.border_radius }}px;
+    margin-left: {{ block.settings.margin_left }}px;
+    position: relative;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  .discount-badge-{{ ai_gen_id }}-wrapper {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 749px) {
+    .discount-badge-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | minus: 2 }}px;
+      padding: {{ block.settings.vertical_padding | minus: 1 }}px {{ block.settings.horizontal_padding | minus: 2 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="discount-badge-{{ ai_gen_id }}-wrapper" {{ block.shopify_attributes }}>
+  {% if product.compare_at_price > product.price %}
+    {% assign discount_amount = product.compare_at_price | minus: product.price %}
+    {% assign discount_percentage = discount_amount | times: 100 | divided_by: product.compare_at_price %}
+    
+    <span class="discount-badge-{{ ai_gen_id }}">
+      {{ block.settings.badge_prefix }}{{ discount_percentage }}{{ block.settings.badge_suffix }}
+    </span>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Discount Badge",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Badge Text"
+    },
+    {
+      "type": "text",
+      "id": "badge_prefix",
+      "label": "Badge prefix",
+      "default": "-"
+    },
+    {
+      "type": "text",
+      "id": "badge_suffix",
+      "label": "Badge suffix",
+      "default": "%"
+    },
+    {
+      "type": "header",
+      "content": "Badge Style"
+    },
+    {
+      "type": "color",
+      "id": "badge_background_color",
+      "label": "Background color",
+      "default": "#FFF3B0"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Text color",
+      "default": "#D6A400"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "margin_left",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Left margin",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discount Badge"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,162 @@
+<style>
+    .first-line {
+  	display: flex;
+  	gap: 20px;
+  }
+       .contact-wrapper {
+      	display: flex;
+      	gap: 40px;
+      	padding: 40px 20px;
+      	/* border: 1px solid #eee; */
+      }
+      .contact-form {
+    	width: 60%;
+    }
+      .contact-form #contact_form {
+    	width: 100%;
+    }
+      .contact-form, .contact-info {
+      	padding: 40px;
+      	border: 1px solid #ddd;
+      }
+
+        .contact-form h2,
+        .contact-info h2 {
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+          width: 100%;
+          padding: 12px;
+          margin-bottom: 15px;
+          border: 1px solid #ddd;
+        }
+
+        .contact-form button {
+          background-color: #c0932b;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .contact-info-block {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 20px;
+        }
+
+        .contact-info-block i {
+          margin-right: 10px;
+          margin-top: 4px;
+        }
+</style>
+
+<div class="page-width2">
+  <div class="contact-wrapper">
+    <div class="contact-form">
+      <h2>{{ section.settings.form_heading }}</h2>
+      <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="contact-form">
+        <input type="hidden" name="form_type" value="contact">
+        <input type="hidden" name="utf8" value="✓">
+
+        <div class="first-line">
+          <input type="text" name="contact[name]" placeholder="Name">
+          <input type="email" name="contact[email]" placeholder="Email *" required>
+        </div>
+        <input type="text" name="contact[phone]" placeholder="Phone number">
+        <textarea name="contact[body]" placeholder="Comment" rows="4"></textarea>
+
+        <button class="comn-btn" type="submit">SEND</button>
+      </form>
+    </div>
+
+    <div class="contact-info">
+      <h2>{{ section.settings.info_heading }}</h2>
+
+      <div class="contact-info-block">
+        <i class="fa-solid fa-house"></i>
+        <div>
+          <strong>Address:</strong><br>
+          {{ section.settings.address | newline_to_br }}
+        </div>
+      </div>
+
+      <div class="contact-info-block">
+        <i class="fa-solid fa-phone"></i>
+        <div>
+          <strong>Contact No.:</strong><br>
+          {{ section.settings.phone }}
+        </div>
+      </div>
+
+      <div class="contact-info-block">
+        <i class="fa-solid fa-envelope"></i>
+        <div>
+          <strong>Email:</strong><br>
+          {{ section.settings.email }}
+        </div>
+      </div>
+
+      <div class="contact-info-block">
+        <i class="fa-solid fa-info-circle"></i>
+        <div>
+          <strong>Store Info:</strong><br>
+          {{ section.settings.store_info }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact Form With Info",
+  "settings": [
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form Heading",
+      "default": "Do You Have Any Questions?"
+    },
+    {
+      "type": "text",
+      "id": "info_heading",
+      "label": "Info Heading",
+      "default": "Get In Touch With Us"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address",
+      "default": "33 New Montgomery St.\nSte 750 San Francisco,\nCA, USA 94105"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "(+91) 9876-543-210"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "johary@example.com"
+    },
+    {
+      "type": "text",
+      "id": "store_info",
+      "label": "Store Info",
+      "default": "Monday – Friday 10 AM – 8 PM"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form With Info"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+<div class="product-views">
+  <i class="fas fa-eye"></i>
+  <span>
+    {% assign random_viewers = 'now' | date: '%S' | plus: 10 | modulo: 40 | plus: 20 %}
+    {{ random_viewers }} people are viewing this right now
+  </span>
+</div>
+
+<style>
+  .product-views {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 6px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .product-views i {
+    font-size: 16px;
+    color: #333;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Viewer Count",
+  "settings": []
+}
+{% endschema %}

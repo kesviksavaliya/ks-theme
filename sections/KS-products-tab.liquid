@@ -1,0 +1,429 @@
+<div class="best-seller-wrapper">
+  <div class="page-width">
+    <div class="product-tab-heaader">
+      <div class="div-inner-title">
+        <h2>{{ section.settings.heading }}</h2>
+        <!-- <p>{{ section.settings.description }}</p> -->
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        {% for block in section.blocks %}
+          <button
+            class="tab-button {% if forloop.first %}active{% endif %}"
+            data-tab="tab-{{ forloop.index }}"
+          >
+            {{ block.settings.tab_name }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    {% for block in section.blocks %}
+      {% assign selected_collection = collections[block.settings.collection] %}
+      <div
+        class="seller-product-inner best-seller-slider tab-content {% if forloop.first %}active{% endif %}"
+        id="tab-{{ forloop.index }}"
+      >
+        {% if selected_collection %}
+          {% for product in selected_collection.products limit: 8 %}
+            <div class="seller-product-slide">
+              <a href="{{ product.url }}" class="seller-product-item">
+                <div class="product-image-wrapper">
+                  <img
+                    class="default-image"
+                    src="{{ product.featured_image | img_url: 'master' }}"
+                    alt="{{ product.title }}"
+                  >
+                  {% if product.images[1] %}
+                    <img
+                      class="hover-image"
+                      src="{{ product.images[1] | img_url: 'master' }}"
+                      alt="{{ product.title }}"
+                    >
+                  {% endif %}
+                </div>
+                <div class="image-inner-item-right">
+                  <div class="wishlist-tooltip">
+                    <span class="wishlist-heart">♡</span>
+                    <p class="tooltip-text">Add to wishlist</p>
+                  </div>
+
+                  <div class="wishlist-tooltip">
+                    <span class="compare-product-icon">
+                      <button 
+                        class="compare-product-btn" 
+                        data-product-handle="{{ product.handle }}" 
+                        data-product-title="{{ product.title }}" 
+                        data-product-image="{{ product.featured_image | img_url: 'medium' }}"
+                        data-product-price="{{ product.price | money_without_currency }}"
+                      >
+                        <i class="fa-solid fa-not-equal"></i>
+                      </button>
+                    </span>
+                    <p class="tooltip-text">Add to compare</p>
+                  </div>
+                </div>
+
+                <div class="image-inner-item-left">
+                  {% if product.compare_at_price > product.price %}
+                    {% assign discount = product.compare_at_price
+                      | minus: product.price
+                      | times: 100.0
+                      | divided_by: product.compare_at_price
+                      | round
+                    %}
+                    {% if discount > 10 %}
+                      <span class="discount">-{{ discount }}%</span>
+                    {% endif %}
+                  {% endif %}
+                </div>
+
+                <div class="select-option">
+                  <p> {{ block.settings.hover_text }}</p>
+                </div>
+
+                <div class="product-info">
+                  <h4 class="name">{{ product.title }}</h4>
+                  <div class="product-price">
+                    <strong>{{ product.price | money_with_currency }}</strong>
+                    <span>{{ product.compare_at_price | money_with_currency }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No collection selected or collection is empty</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="compare-now-button" style="display:none;">
+  <a href="#" class="compare-link" id="compare-trigger">
+    <span class="compare-count">0</span>
+    <span class="compare-text">Compare Now</span>
+  </a>
+</div>
+
+<!-- Compare Popup (shows all products in compare list) -->
+<div id="compare-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:90%; max-width:500px; background:white; padding:25px; border-radius:8px; z-index:1000; box-shadow:0 0 20px rgba(0,0,0,0.2);">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+    <h3 style="margin:0; font-size:1.3rem;">Compare Products (<span id="popup-count">0</span>)</h3>
+    <button id="close-popup" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+  </div>
+  
+  <div id="compare-products-list" style="max-height:50vh; overflow-y:auto;">
+    <!-- All compared products will appear here -->
+    <div class="compare-product-item" style="display:none; padding:15px; border-bottom:1px solid #eee; margin-bottom:10px;">
+      <div style="display:flex; gap:15px; align-items:center;">
+        <img src="" class="compare-product-image" style="width:60px; height:60px; object-fit:contain;">
+        <div style="flex:1;">
+          <h4 class="compare-product-title" style="margin:0 0 5px 0; font-size:1rem;"></h4>
+          <div class="compare-product-price" style="color:#e63946; font-weight:bold;"></div>
+        </div>
+        <button class="remove-product" style="background:none; border:none; color:#ff0000; cursor:pointer;">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:20px; border-top:1px solid #eee;">
+    <button id="cancel-popup" style="padding:8px 16px; background:#f8f9fa; border:1px solid #ddd; border-radius:4px; cursor:pointer;">Cancel</button>
+    <a href="/pages/compare" id="compare-confirm" style="padding:8px 16px; background:#2a9d8f; color:white; text-decoration:none; border-radius:4px; font-weight:bold;">Compare Now</a>
+  </div>
+</div>
+
+<div id="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+
+
+
+<style>
+  /* Tab styles */
+  .tab-buttons {
+    display: flex;
+    gap: 15px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    padding: 10px 30px;
+    border: 2px solid transparent;
+    background: #eee;
+    font-weight: bold;
+    transition: 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .tab-button.active {
+    background: #c49112;
+    color: #fff;
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  .product-tab-heaader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  
+  .tab-button:hover {
+    border: 2px solid #c49112;
+  }
+  
+  /* Compare button styles */
+  #compare-trigger {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background: #c49112;
+    color: white;
+    border-radius: 4px;
+    transition: background 0.3s;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 998;
+  }
+  
+  #compare-trigger:hover {
+    background: #000;
+  }
+  
+  .compare-count {
+    background: white;
+    color: #2a9d8f;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  .remove-product:hover {
+    background: #e9ecef !important;
+  }
+  
+  #compare-confirm:hover {
+    background: #21867a !important;
+  }
+  
+  #cancel-popup:hover {
+    background: #e9ecef !important;
+  }
+  
+  /* Compare product button in product cards */
+  .compare-product-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: inherit;
+  }
+
+  
+  #compare-trigger {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #c49112;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    z-index: 998;
+  }
+  
+  .compare-count {
+    background: white;
+    color: #2a9d8f;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+  }
+  
+  #compare-popup {
+    animation: fadeIn 0.3s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Compare products functionality
+  let compareProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
+  const maxCompareItems = 4;
+  const elements = {
+    trigger: document.getElementById('compare-trigger'),
+    popup: document.getElementById('compare-popup'),
+    overlay: document.getElementById('overlay'),
+    closeBtn: document.getElementById('close-popup'),
+    cancelBtn: document.getElementById('cancel-popup'),
+    productsList: document.getElementById('compare-products-list'),
+    countDisplay: document.querySelector('.compare-count'),
+    popupCount: document.getElementById('popup-count'),
+    template: document.querySelector('.compare-product-item'),
+    compareConfirm: document.getElementById('compare-confirm')
+  };
+
+  // Save products to localStorage
+  function saveCompareProducts() {
+    localStorage.setItem('compareProducts', JSON.stringify(compareProducts));
+  }
+
+  // Update UI functions
+  function updateCompareUI() {
+    const count = compareProducts.length;
+    elements.countDisplay.textContent = count;
+    elements.popupCount.textContent = count;
+    elements.trigger.style.display = count > 0 ? 'flex' : 'none';
+    
+    // Update compare link with current products
+    const handles = compareProducts.map(p => p.handle).join('+');
+    elements.compareConfirm.href = `/pages/compare?products=${handles}`;
+    
+    elements.productsList.innerHTML = '';
+    compareProducts.forEach(product => {
+      const productElement = elements.template.cloneNode(true);
+      productElement.style.display = 'block';
+      productElement.querySelector('.compare-product-image').src = product.image;
+      productElement.querySelector('.compare-product-title').textContent = product.title;
+      productElement.querySelector('.compare-product-price').textContent = `$${product.price}`;
+      productElement.querySelector('.remove-product').dataset.handle = product.handle;
+      elements.productsList.appendChild(productElement);
+    });
+    
+    saveCompareProducts();
+  }
+
+  function closePopup() {
+    elements.popup.style.display = 'none';
+    elements.overlay.style.display = 'none';
+  }
+
+  // Add to compare from product buttons
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.compare-product-btn')) {
+      e.preventDefault();
+      const btn = e.target.closest('.compare-product-btn');
+      const product = {
+        handle: btn.dataset.productHandle,
+        title: btn.dataset.productTitle,
+        image: btn.dataset.productImage,
+        price: btn.dataset.productPrice
+      };
+      
+      const existingIndex = compareProducts.findIndex(p => p.handle === product.handle);
+      if (existingIndex >= 0) {
+        compareProducts.splice(existingIndex, 1);
+      } else {
+        if (compareProducts.length >= maxCompareItems) {
+         
+          return;
+        }
+        compareProducts.push(product);
+      }
+      
+      updateCompareUI();
+    }
+  });
+
+  // Show popup when compare-trigger is clicked
+  elements.trigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (compareProducts.length > 0) {
+      elements.popup.style.display = 'block';
+      elements.overlay.style.display = 'block';
+    }
+  });
+
+  // Remove product from popup
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('remove-product')) {
+      const handle = e.target.dataset.handle;
+      compareProducts = compareProducts.filter(p => p.handle !== handle);
+      updateCompareUI();
+      if (compareProducts.length === 0) closePopup();
+    }
+  });
+
+  // Close popup handlers
+  elements.closeBtn.addEventListener('click', closePopup);
+  elements.cancelBtn.addEventListener('click', closePopup);
+  elements.overlay.addEventListener('click', closePopup);
+
+  // Initialize
+  updateCompareUI();
+});
+</script>
+{% schema %}
+{
+  "name": "Tabbed Selling Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Selling Products"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Explore our top collections</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tab",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_name",
+          "label": "Tab Name",
+          "default": "Tab 1"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Select Collection"
+        },
+        {
+          "type": "text",
+          "id": "hover_text",
+          "label": "Hover Text",
+          "default":"hover karo"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Tabbed Selling Products"
+    }
+  ]
+}
+{% endschema %}

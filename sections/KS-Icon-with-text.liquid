@@ -1,0 +1,92 @@
+<div class="icon-with-text-wrapper">
+  <div class="page-width">
+    <div class="icon-with-text-inner">
+      {% for block in section.blocks %}
+        <div class="inner-item">
+          <div
+            class="icon-image-block"
+            style="background-image: url({{ block.settings.image | img_url: 'master' }});"
+          ></div>
+          <h4>{{ block.settings.heading }}</h4>
+          <p>{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "KS Img with Text",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "ks_image_with_text_block",
+      "name": "KS Image with text block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        },
+        {
+          "type": "text",
+          "label": "Heading",
+          "id": "heading",
+          "default": "Heading",
+          "placeholder": "Enter Value"
+        },
+        {
+          "type": "richtext",
+          "label": "Description",
+          "id": "description",
+          "default": "<p>Because Your Questions Deserve Timely, Expert Answers.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "KS Img with Text"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+           .icon-with-text-wrapper {
+         	margin: 100px 0;
+         }
+           .icon-with-text-inner {
+       	display: flex;
+       	gap: 40px;
+       	justify-content: center;
+       }.icon-with-text-inner .inner-item {
+       	width: 17%;
+       	text-align: center;
+       }.icon-with-text-inner .inner-item img {
+       	width: 67px;
+       	height: 60px;
+       	object-fit: contain;
+       	margin: 0 auto;
+       	margin-bottom: 12px;
+               transition: transform 0.3s ease, filter 0.3s ease;
+       }.icon-with-text-inner .inner-item h4 {
+       	margin-bottom: 10px;
+       	font-size: 20px;
+       	font-weight: 500;
+       	color: black;
+           }
+    .icon-image-block {
+  	height: 67px;
+  	width: 60px;
+  	margin: 0 auto;
+  	background-size: 100%;
+  	background-position: center 0px;
+  	background-repeat: no-repeat;
+        transition: background-position 0.4s ease;
+  }
+    .icon-with-text-inner .inner-item:hover .icon-image-block {
+  	background-position: center -80px;
+  }
+</style>

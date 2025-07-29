@@ -1,0 +1,56 @@
+{% comment %}
+  Shows a “Bundle & Save” block if the current product has
+  bundles.products metafield entries (list of product references).
+{% endcomment %}
+
+{% assign bundle_items = product.metafields.bundles.products.value %}
+
+{% if bundle_items and bundle_items.size > 0 %}
+  <section class="bundle-block page-width">
+    <h2 class="h3">Bundle & Save</h2>
+
+    <div class="bundle-grid">
+      {% assign total_price = 0 %}
+      {% for p in bundle_items %}
+        {% assign first_variant = p.variants.first %}
+        {% assign total_price = total_price | plus: first_variant.price %}
+
+        <article class="bundle-card">
+          <a href="{{ p.url }}">
+            <img
+              src="{{ p.featured_image | image_url: width: 320 }}"
+              loading="lazy"
+              alt="{{ p.featured_image.alt | escape }}"
+              width="160"
+              height="160"
+            >
+          </a>
+          <p class="bundle-title">{{ p.title }}</p>
+          <p class="bundle-price">
+            {{ first_variant.price | money_without_currency }}
+            {{ cart.currency.iso_code }}
+          </p>
+          <input
+            type="hidden"
+            class="bundle-variant-id"
+            value="{{ first_variant.id }}"
+          >
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="bundle-summary">
+      <p class="bundle-total">
+        Total ({{ bundle_items.size }}items): {{ total_price | money_without_currency }}
+        {{ cart.currency.iso_code }}
+      </p>
+      <button
+        id="add-bundle-to-cart"
+        type="button"
+        class="button button--primary"
+      >
+        Add bundle to cart
+      </button>
+    </div>
+  </section>
+{% endif %}

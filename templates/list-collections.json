@@ -1,0 +1,300 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_list_Wfgh3m": {
+      "type": "main-collection-list",
+      "blocks": {
+        "group_4FtiAg": {
+          "type": "group",
+          "name": "t:names.header",
+          "settings": {
+            "link": "",
+            "open_in_new_tab": false,
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_fRMQMR": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h3>Collections</h3>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_fRMQMR"
+          ]
+        },
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
+          "settings": {
+            "placement": "below_image",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "collection_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0
+          },
+          "blocks": {
+            "collection_title_7YgBPU": {
+              "type": "collection-title",
+              "name": "t:names.collection_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "portrait",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_title_7YgBPU"
+          ]
+        }
+      },
+      "block_order": [
+        "group_4FtiAg"
+      ],
+      "disabled": true,
+      "name": "t:names.collections_grid",
+      "settings": {
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "bento_gap": 8,
+        "rows_gap": 24,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "ks_collections_DrErYz": {
+      "type": "KS-collections",
+      "blocks": {
+        "collection_item_8VDmnd": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "mens-jwellery"
+          }
+        },
+        "collection_item_DJNPng": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "anklets",
+            "icon": "shopify://shop_images/cat-8_9fec7911-5af1-4c5c-b13d-f05954afaeff.png"
+          }
+        },
+        "collection_item_E9gtbr": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "anklets",
+            "icon": "shopify://shop_images/cat-3_d96ad283-aca0-49ec-8b5a-60750d1cdb0e.png"
+          }
+        },
+        "collection_item_69rktT": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "ankle-bracelets",
+            "icon": "shopify://shop_images/cat-8_9fec7911-5af1-4c5c-b13d-f05954afaeff.png"
+          }
+        },
+        "collection_item_tt4eXH": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "beaded-ankle",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_UKYaAY": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "beaded-bracelets",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_j896bL": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "bracelets",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_Dc88aM": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "braided-ankle",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_M3Bxnb": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "butterfly-pendant",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_wCid43": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "charm-bracelets",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_6fHWBt": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "charmed-ankle",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_jBQnUa": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "choker",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_FatFbd": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "cocktail-ring",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        },
+        "collection_item_BTC9pt": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "beaded-bracelets",
+            "icon": "{{ block.settings.collection.image }}"
+          }
+        }
+      },
+      "block_order": [
+        "collection_item_8VDmnd",
+        "collection_item_DJNPng",
+        "collection_item_E9gtbr",
+        "collection_item_69rktT",
+        "collection_item_tt4eXH",
+        "collection_item_UKYaAY",
+        "collection_item_j896bL",
+        "collection_item_Dc88aM",
+        "collection_item_M3Bxnb",
+        "collection_item_wCid43",
+        "collection_item_6fHWBt",
+        "collection_item_jBQnUa",
+        "collection_item_FatFbd",
+        "collection_item_BTC9pt"
+      ],
+      "name": "Collections Grid",
+      "settings": {
+        "heading": "Collections"
+      }
+    }
+  },
+  "order": [
+    "collection_list_Wfgh3m",
+    "ks_collections_DrErYz"
+  ]
+}

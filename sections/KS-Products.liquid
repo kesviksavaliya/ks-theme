@@ -1,0 +1,529 @@
+<div class="best-seller-wrapper">
+  <div class="page-width">
+    <div class="div-inner-title">
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+    <div class="seller-product-inner best-seller-slider">
+      {% assign collection_handle = section.settings.collection %}
+      {% assign selected_collection = collections[collection_handle] %}
+      {% if selected_collection %}
+        {% for product in selected_collection.products limit: 8 %}
+          <div class="seller-product-slide">
+            <a href="{{ product.url }}" class="seller-product-item">
+              <div class="product-image-wrapper">
+                <!-- Default image -->
+                <img
+                  class="default-image"
+                  src="{{product.featured_image | img_url:'master' }}"
+                  alt="{{ product.title }}"
+                >
+
+                {% if product.images[1] %}
+                  <!-- Hover image -->
+                  <img
+                    class="hover-image"
+                    src="{{ product.images[2] | img_url:'master' }}"
+                    alt="{{ product.title }}"
+                  >
+                {% endif %}
+              </div>
+              <div class="image-inner-item-right wishlist-tooltip">
+                <p class="tooltip-text">Add to wishlist</p>
+                <span>♡</span>
+              </div>
+
+              <div class="image-inner-item-left">
+                <!-- <span class="pre-order">Pre Order</span> -->
+                {% if product.compare_at_price > product.price %}
+                  {% assign discount = product.compare_at_price
+                    | minus: product.price
+                    | times: 100.0
+                    | divided_by: product.compare_at_price
+                    | round
+                  %}
+                  {% if discount > 10 %}
+                    <span class="discount">-{{ discount }}%</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+
+              <div href="#" class="select-option">
+                <p>{{ section.settings.hover_text }}</p>
+              </div>
+
+              <div class="product-info">
+                <h4 class="name">{{ product.title }}</h4>
+                <div class="product-price">
+                  <strong>{{ product.price | money_with_currency }}</strong>
+                  <span>{{ product.compare_at_price | money_with_currency }}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No collection selected or collection is empty</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+                .product-price{
+                  display: flex;
+                  gap: 10px
+                }
+                .product-price strong {
+            	color: #111111;
+            	font-size: 18px;
+            }
+                .product-price span{
+                  text-decoration: line-through;
+                }
+                                 .best-seller-wrapper {
+                                   padding: 80px 0;
+                                 }
+
+                                 /* .seller-product-inner {
+                                   display: flex;
+                                   gap: 20px;
+                                   flex-wrap: wrap;
+                                   margin: 0 -10px;
+                                 } */
+
+                                 .seller-product-item {
+                  display: block;
+                  box-sizing: border-box;
+                  text-decoration: none;
+                  color: inherit;
+                  /* no fixed width here – let Slick handle slide width */
+                }
+
+                               .seller-product-inner img {
+                           	width: 100%;
+                           	border-radius: 8px;
+                           	left: 50px;
+                           	transition: all 0.5s;
+                           	object-fit: cover;
+                           }
+                                 .product-info {
+                                   padding-top: 10px;
+                                 }
+
+          .seller-product-item .product-info .name {
+  	font-size: 16px;
+  	font-weight: 500;
+  	color: rgb(17, 17, 17);
+  	margin-bottom: 10px;
+  	letter-spacing: 1px;
+  	line-height: 25px;
+  }
+
+                                 .product-info strong {
+                                   font-weight: 600;
+                                 }
+
+
+                  .slick-prev::before, .slick-next::before {
+                    display:none;
+                  	font-family: 'slick';
+                  	font-size: 50px;
+                  	line-height: 1;
+                  	opacity: .88;
+                  	color: black;
+                  	-webkit-font-smoothing: antialiased;
+                  	-moz-osx-font-smoothing: grayscale;
+                  	display: flex;
+                  	align-items: center;
+                  	margin-top: 7px;
+                  	/* margin: auto; */
+                  	background-color: transparent;
+                  }
+                  .slick-arrow {
+
+                  	top: 50%;
+                  	transform: translateY(-50%);
+                  	z-index: 2;
+                  	background: transparent;
+                  	border: none;
+                  	padding: 10px;
+                  	border-radius: 50%;
+                  	/* box-shadow: 0 2px 8px rgba(0,0,0,0.2); */
+                  	width: 50px;
+                  	height: 50px;
+                  	justify-content: center;
+                  	display: flex;
+                  	align-items: center;
+                  }
+                         .slick-prev {
+                           left: 30px;
+                           position: absolute;
+                         }
+                         .slick-next {
+                           right: 30px;
+                           position: absolute;
+                         }
+
+                         .seller-product-slide {
+                         padding: 0 10px; /* half of the gap you want */
+                         box-sizing: border-box;
+                           position: relative;
+                       }
+                .select-option {
+              	position: absolute;
+              	bottom:25%;
+              	left: 0;
+              	width: 100%;
+              	text-align: center;
+              	opacity: 0;
+              	visibility: hidden;
+              	transform: translateY(30%);
+              	transition: all .3s ease;
+              	z-index: 2;
+              }
+              .select-option p {
+      	display: inline-block;
+      	background-color: #c19417;
+      	padding: 6px;
+      	border-radius: 8px;
+      	font-size: 16px;
+      	font-weight: 500;
+      	transition: background-color .3s;
+      	width: 90%;
+      	color: white;
+      	text-transform: uppercase;
+      }
+              .seller-product-item:hover .select-option {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0%);
+              }
+              .select-option p:hover{
+                background-color: #000000 !important;
+                color: #fff;
+              }
+
+           .wishlist-tooltip {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+  .image-inner-item-right span i {
+	font-size: 18px;
+}
+
+.tooltip-text {
+	visibility: hidden;
+	opacity: 0;
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	padding: 2px 10px;
+	border-radius: 2px;
+	font-size: 13px;
+	position: absolute;
+	transform: translateY(30%);
+	white-space: nowrap;
+	transition: opacity .3s;
+	z-index: 10;
+	right: 145%;
+	top: 0;
+	transform: translateY(-30%);
+}
+
+.tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: #000;
+  clip-path: polygon(0 0, 100% 50%, 0 100%, 0 0);
+}
+
+.wishlist-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.image-inner-item-right span {
+  background-color: #fff;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  font-size: 25px;
+  justify-content: center;
+  border-radius: 50px;
+  align-items: center;
+  transition: all 0.3s;
+  margin-bottom: 10px;
+}
+
+.image-inner-item-right span:hover {
+  background-color: black;
+  color: white;
+}
+
+  .image-inner-item-right span button {
+	background-color: transparent;
+	border: none;
+    cursor: pointer
+}
+
+.image-inner-item-right {
+  position: absolute;
+  top: 2%;
+  right: 6%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.seller-product-item:hover .image-inner-item-right {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-inner-item-left {
+  position: absolute;
+  top: 2%;
+  left: 3%;
+}
+
+.image-inner-item-left span {
+  padding: 5px 15px;
+  border-radius: 6px;
+  color: white;
+}
+
+.image-inner-item-left .discount {
+  background-color: #d0473e;
+}
+
+.image-inner-item-left .pre-order {
+  background-color: #168591;
+}
+
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 360px;
+  border-radius: 10px;
+}
+
+              .image-inner-item-left .discount {
+              	background-color: #d0473e;
+              }
+              .image-inner-item-left .pre-order {
+              	background-color: #168591;
+              }
+              .product-image-wrapper {
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+                height: 360px;
+                border-radius: 10px
+              }
+  .product-image-wrapper img{
+    height: 100%
+  }
+              .default-image {
+                display: block;
+                width: 100%;
+                border-radius: 8px;
+                transition: opacity 0.3s;
+              }
+
+              .hover-image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                border-radius: 8px;
+                opacity: 0;
+                transition: opacity 0.5s ease;
+              }
+
+              .seller-product-item:hover .hover-image {
+              	opacity: 1;
+              	left: 0;
+              }
+
+              .seller-product-item:hover .default-image {
+              	opacity: 0.8;
+              }
+  .image-inner-item-right span:hover i {
+	color: white;
+}
+  #compare-now-button {
+  position: fixed;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  background-color: transperent;
+  color: #fff;
+  padding: 10px 5px;
+  z-index: 9999;
+  writing-mode: vertical-rl;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px 0 0 5px;
+}
+
+#compare-now-button .compare-link {
+	text-decoration: none;
+	color: white;
+	font-size: 14px;
+	display: flex !important;
+	height: 170px;
+	width: 50px;
+}
+
+#compare-now-button .compare-count {
+	background-color: white;
+	color: black;
+	font-size: 16px;
+	border-radius: 50%;
+	padding: 12px 6px;
+	margin-bottom: 6px;
+}
+#compare-table-body tr td {
+	width: 200px;
+	height: 200px;
+}
+
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    $('.best-seller-slider').slick({
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      infinite: true,
+      speed: 500,
+      centerMode: false,
+       rtl: document.documentElement.getAttribute("dir") === "rtl", 
+      prevArrow: '<button class="slick-prev slick-arrow" aria-label="Previous" type="button"><</button>',
+      nextArrow: '<button class="slick-next slick-arrow" aria-label="Next" type="button">></button>',
+      responsive: [
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 4,
+          }
+        },
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 3,
+          }
+        },
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 2,
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+          }
+        }
+      ]
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const maxCompareItems = 4;
+    const compareNowBtn = document.getElementById('compare-now-button');
+    const compareCount = compareNowBtn.querySelector('.compare-count');
+
+    // Update button based on current localStorage
+    function updateCompareButton() {
+      let compareList = JSON.parse(localStorage.getItem('compareList')) || [];
+      if (compareList.length > 0) {
+        compareNowBtn.style.display = 'block';
+        compareCount.textContent = compareList.length;
+      } else {
+        compareNowBtn.style.display = 'none';
+      }
+    }
+
+    updateCompareButton(); // call on page load
+
+    // Attach to compare buttons
+    document.querySelectorAll('.compare-product-btn').forEach(button => {
+      button.addEventListener('click', function () {
+        const product = {
+          handle: this.dataset.productHandle,
+          title: this.dataset.productTitle,
+          image: this.dataset.productImage,
+          price: this.dataset.productPrice
+        };
+
+        let compareList = JSON.parse(localStorage.getItem('compareList')) || [];
+
+        if (compareList.some(p => p.handle === product.handle)) {
+          alert('Already in compare list!');
+          return;
+        }
+
+        if (compareList.length >= maxCompareItems) {
+          alert('You can only compare up to ' + maxCompareItems + ' products.');
+          return;
+        }
+
+        compareList.push(product);
+        localStorage.setItem('compareList', JSON.stringify(compareList));
+        updateCompareButton();
+        alert(`${product.title} added to compare!`);
+      });
+    });
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": "Selling Products Section",
+  "settings": [
+     {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Selling",
+    },{
+      "type": "richtext",
+      "id": "description",
+      "label": "description",
+      "default": "<p>Express your style with our standout collection—fashion meets sophistication.</p>"
+    },
+    {
+          "type": "text",
+          "id": "hover_text",
+          "label": "Hover Text",
+          "default":"hover karo"
+        }
+  ],
+  "presets": [
+    {
+      "name": "Selling Products Section"
+    }
+  ]
+}
+{% endschema %}

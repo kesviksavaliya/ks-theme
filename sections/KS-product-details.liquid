@@ -1,0 +1,40 @@
+{% schema %}
+{
+  "name": "Product Details Info",
+  "tag": "section",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Product Details Info"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="product-details">
+  <p><strong>SKU:</strong> {{ product.selected_or_first_available_variant.sku }}</p>
+
+  <p><strong>Vendor:</strong> {{ product.vendor }}</p>
+
+  <p><strong>Category:</strong> {{ product.type }}</p>
+
+  {% if product.tags.size > 0 %}
+    <p><strong>Tags:</strong> {{ product.tags | join: ', ' }}</p>
+  {% endif %}
+</div>
+
+<style>
+  .product-details {
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+  }
+  .product-details p {
+    margin: 4px 0;
+  }
+  .product-details strong {
+    font-weight: 600;
+  }
+</style>

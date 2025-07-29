@@ -1,0 +1,137 @@
+{%- liquid
+  # search.liquid
+  # Renders search button with dynamic language switcher
+  # Automatically adapts to languages enabled in Shopify admin
+  # Usage: {% render 'search' 
+%}
+
+{%- doc -%}
+  Renders the search action button with language switcher.
+
+  @param {string} [style] - The style of the search action
+  @param {string} [class] - Additional classes for the search action
+  @example
+    {% render 'search', style: 'compact', class: 'header-search' %}
+{%- enddoc -%}
+
+{% unless style == 'none' %}
+  <search-button class="search-action{% if class != blank %} {{ class | strip }}{% endif %}">
+    <button
+      on:click="#search-modal/showDialog"
+      class="button button-unstyled search-modal__button header-actions__action"
+      aria-label="{{ 'accessibility.open_search_modal' | t }}"
+    >
+      <span aria-hidden="true" class="svg-wrapper">
+        {{ 'icon-search.svg' | inline_asset_content }}
+      </span>
+    </button>
+
+    <select class="language-switcher" onchange="switchLanguage(this)">
+      {%- for locale in shop.published_locales -%}
+        <option 
+          value="/{{ locale.iso_code }}" 
+          {% if locale.primary %}data-primary-locale="/{{ locale.iso_code }}"{% endif %}
+          {% if locale.iso_code == request.locale.iso_code %}selected{% endif %}
+        >
+          {{ locale.endonym_name | default: locale.name }}
+        </option>
+      {%- endfor -%}
+    </select>
+  </search-button>
+
+  <script>
+    function switchLanguage(select) {
+      const newLocale = select.value;
+      const currentPath = window.location.pathname;
+      const searchParams = window.location.search;
+      const hash = window.location.hash;
+      
+      // Get all available locales from select options
+      const availableLocales = Array.from(select.options).map(opt => opt.value.replace(/^\//, ''));
+      const primaryLocale = document.querySelector('option[data-primary-locale]')?.dataset.primaryLocale;
+      
+      // Create regex pattern for all locales
+      const localePattern = `^\\/(${availableLocales.join('|')})(\\/|$)`;
+      const localeRegex = new RegExp(localePattern);
+      
+      // Remove current locale from path
+      const pathWithoutLocale = currentPath.replace(localeRegex, '/');
+      
+      // Determine new path
+      let newPath;
+      if (newLocale === primaryLocale) {
+        newPath = pathWithoutLocale === '/' ? '/' : pathWithoutLocale;
+      } else {
+        newPath = newLocale + (pathWithoutLocale === '/' ? '' : pathWithoutLocale);
+      }
+      
+      // Clean up any double slashes
+      newPath = newPath.replace(/\/+/g, '/');
+      
+      // Preserve query parameters and hash
+      const newUrl = newPath + searchParams + hash;
+      
+      window.location.href = newUrl;
+    }
+  </script>
+{% endunless %}
+
+{% style %}
+  .search-action {
+    --search-border-radius: var(--style-border-radius-inputs);
+    --search-border-width: var(--style-border-width-inputs);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .language-switcher {
+    appearance: none;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    min-width: 120px;
+  }
+
+  .language-switcher:hover,
+  .language-switcher:focus {
+    border-color: #000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+
+  /* Responsive adjustments */
+  .header__column--center .search-action {
+    width: auto;
+    flex-grow: 1;
+  }
+
+  :is(.header__column--left, .header__column--center) .search-action {
+    @media screen and (min-width: 750px) {
+      margin-inline: calc(var(--padding-lg) * -1);
+    }
+  }
+
+  .header__column--right .search-action {
+    @media screen and (min-width: 750px) {
+      margin-inline: calc(var(--gap-md) * -1) calc(var(--gap-xs) * -1);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .language-switcher {
+      padding: 6px 28px 6px 10px;
+      font-size: 13px;
+      min-width: 100px;
+    }
+  }
+{% endstyle %}

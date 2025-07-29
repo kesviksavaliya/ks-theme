@@ -1,0 +1,99 @@
+<div
+  class="background-hero-wrapper"
+  style=" background-image: url('{{ section.settings.image | img_url:"master" }}');"
+>
+  <div class="background-hero-text">
+    <h2>{{ section.settings.heading }}</h2>
+    <p>{{ section.settings.description }}</p>
+    <a class="comnbtn" href="{{ section.settings.url }}">{{ section.settings.url_text }}</a>
+  </div>
+</div>
+
+{% stylesheet %}
+    .background-hero-wrapper {
+      position: relative;
+      height: 80vh;
+
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+    }
+
+  .background-hero-text {
+  	position: absolute;
+  	top: 50%;
+  	left: 71%;
+  	transform: translate(-50%, -50%);
+    color: #fff;
+  }
+
+    .background-hero-text h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .background-hero-text p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .background-hero-text a {
+      display: inline-block;
+      background-color: white;
+      color: black;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+  .background-hero-text a:hover{
+    background-color: black;
+    color: #fff;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "KS Jwellery Spotlight",
+  "settings": [
+    {
+      "type": "image_picker",
+      "label": "Image",
+      "id": "image"
+    },
+    {
+      "type": "text",
+      "label": "Heading",
+      "id": "heading",
+      "default": "Earrings For Sophisticated Style Delicate",
+      "placeholder": "Enter Heading"
+    },
+    {
+      "type": "richtext",
+      "label": "Description",
+      "id": "description",
+      "default": "<p>We are offering 25% flat discount. Don't miss out!!</p>"
+    },
+    {
+      "type": "url",
+      "label": "URL",
+      "id": "url"
+    },
+    {
+      "type": "text",
+      "label": "URL Text",
+      "id": "url_text",
+      "default": "Shop now",
+      "placeholder": "Enter text of URL"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "KS Jwellery Spotlight Section"
+    }
+  ]
+}
+{% endschema %}

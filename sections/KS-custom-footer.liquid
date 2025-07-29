@@ -1,0 +1,309 @@
+<div class="custom-footer-wrapper">
+  <div class="page-width2">
+    <div class="custom-footer-inner">
+      <!-- Store Information -->
+      <div class="footer-column">
+        <h4>Store Information</h4>
+        <ul class="footer-info">
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            {{ section.settings.store_name }}<br>
+            {{ section.settings.store_address }}<br>
+            {{ section.settings.store_location }}
+          </li>
+          <li>
+            <i class="fa-regular fa-envelope"></i>
+            <a class="mail" href="mailto:{{ section.settings.store_email }}">{{ section.settings.store_email }}</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <a class="tel" href="tel:{{ section.settings.store_phone | remove: ' ' | remove: '-' }}">{{ section.settings.store_phone }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          {% for link in linklists[section.settings.quick_links].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Find Product -->
+      <div class="footer-column">
+        <h4>Find Product</h4>
+        <ul>
+          {% for link in linklists[section.settings.find_product_links].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Your Account -->
+      <div class="footer-column">
+        <h4>Your Account</h4>
+        <ul>
+          {% for link in linklists[section.settings.account_links].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="page-width2 footer-bottom-inner">
+      <!-- Social Icons -->
+      <div class="footer-social">
+        {% if section.settings.facebook_link != blank %}
+          <a href="{{ section.settings.facebook_link }}" target="_blank" class="social-icon">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.instagram_link != blank %}
+          <a href="{{ section.settings.instagram_link }}" target="_blank" class="social-icon">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.youtube_link != blank %}
+          <a href="{{ section.settings.youtube_link }}" target="_blank" class="social-icon">
+            <i class="fa-brands fa-youtube"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.tiktok_link != blank %}
+          <a href="{{ section.settings.tiktok_link }}" target="_blank" class="social-icon">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+        {% endif %}
+        {% if section.settings.close_link != blank %}
+          <a href="{{ section.settings.close_link }}" target="_blank" class="social-icon">
+            <i class="fa-solid fa-xmark"></i>
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Copyright -->
+      <div class="footer-copyright">
+        © {{ 'now' | date: '%Y' }}, {{ section.settings.footer_text }} Powered by Shopify
+      </div>
+
+      <!-- Payment Icons -->
+      <div class="footer-payments">
+        {% for type in shop.enabled_payment_types %}
+          <span class="payment-icon">
+            {{ type | payment_type_svg_tag }}
+          </span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+      .custom-footer-wrapper {
+    	background-color: #111;
+    	color: #fff;
+    }
+      .page-width2 {
+    	padding: 0 15px;
+    	max-width: 1300px;
+    	margin: 0 auto;
+    }
+    .custom-footer-inner {
+    	padding: 100px 0;
+    }
+      .custom-footer-inner {
+    	padding: 100px 0;
+    	display: flex;
+    	gap: 10px;
+    	justify-content: space-between;
+    }
+     .footer-column ul li a {
+    	color: #fff;
+    	opacity: 0.8;
+    	transition: all 0.3s;
+    }
+      .footer-column ul li a:hover {
+    	opacity: 1;
+    	color: #c49112;
+    	margin-left: 10px;
+    }
+       .footer-column ul {
+    	padding: 0;
+    }
+      .footer-column ul li {
+    	list-style: none;
+    	margin-bottom: 10px;
+    	display: flex;
+    	align-items: first baseline;
+    	gap: 9px;
+    }
+      .footer-column ul li i {
+    	margin-right: 8px;
+    	color: #c49112;
+    	font-size: 20px;
+    }
+      .footer-column h4 {
+    	font-size: 19px;
+    	font-weight: 600;
+    }
+      .footer-column {
+    	width: 20%;
+    }
+      .footer-column ul li a.mail:hover, .footer-column ul li a.tel:hover {
+    	margin: 0;
+    	color: #fff;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    .footer-bottom {
+    background-color: #111;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 10px;
+  }
+
+  .footer-social .social-icon {
+    background-color: #fff;
+    color: #000;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 14px;
+  }
+
+  .footer-social .social-icon:hover {
+    background-color: #c49112;
+    color: #fff;
+  }
+
+  .footer-payments img {
+    height: 24px;
+    margin-left: 10px;
+  }
+
+  .footer-copyright {
+    color: #fff;
+    opacity: 0.8;
+    font-size: 14px;
+    text-align: center;
+    flex: 1;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "store_name",
+      "label": "Store Name",
+      "default": "Johary - Jewelry Store"
+    },
+    {
+      "type": "text",
+      "id": "store_address",
+      "label": "Store Address",
+      "default": "507-Union Trade Ipsum Doler"
+    },
+    {
+      "type": "text",
+      "id": "store_location",
+      "label": "Store Location",
+      "default": "Centre France"
+    },
+    {
+      "type": "text",
+      "id": "store_email",
+      "label": "Store Email",
+      "default": "demo@example.com"
+    },
+    {
+      "type": "text",
+      "id": "store_phone",
+      "label": "Store Phone",
+      "default": "(+91) 9876-543-210"
+    },
+    {
+      "type": "link_list",
+      "id": "quick_links",
+      "label": "Quick Links Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "find_product_links",
+      "label": "Find Product Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "account_links",
+      "label": "Your Account Menu"
+    },
+    {
+      "type": "url",
+      "id": "facebook_link",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_link",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_link",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_link",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "close_link",
+      "label": "Close Icon Link"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer Text",
+      "default": "Johary - Jewelry Store (Password: demo)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Footer",
+    }
+  ]
+}
+{% endschema %}
